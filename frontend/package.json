@@ -1,0 +1,22 @@
+{
+  "name": "sorteio-master-frontend",
+  "version": "1.0.0",
+  "description": "Frontend do Sorteio Master - React + Vite",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": ["sorteio", "react", "vite"],
+  "author": "Sorteio Master",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.0",
+    "vite": "^5.3.1"
+  }
+}
