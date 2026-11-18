@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Login - Sorteio Master | Gestão Corporativa</title>
+<!-- Google Fonts: Montserrat & Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Montserrat:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 CDN com plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script data-purpose="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              navy: '#091A35',
+              surface: '#142B4D',
+              gold: '#D9A72E',
+              'gold-hover': '#F2C14E',
+              light: '#F4F6FA',
+              alert: '#DC2626'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Montserrat', 'sans-serif']
+          },
+          boxShadow: {
+            'gold-glow': '0 0 25px rgba(217, 167, 46, 0.28)',
+            'card-depth': '0 20px 50px rgba(4, 12, 26, 0.7)'
+          }
+        }
+      }
+    }
+  </script>
+<!-- BEGIN: Custom Styles -->
+<style data-purpose="background-effects">
+    /* Fundo com degradê radial sutil e vinheta escura */
+    body {
+      background: radial-gradient(circle at 50% 30%, #142B4D 0%, #091A35 75%, #050E1D 100%);
+      min-height: 100vh;
+    }
+
+    /* Padrão geométrico suave no fundo para profundidade corporativa */
+    .bg-corporate-grid {
+      background-image: radial-gradient(rgba(217, 167, 46, 0.05) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+  </style>
+<style data-purpose="card-styling">
+    /* Efeito de acabamento metálico e glassmorphism suave */
+    .glass-card {
+      background: rgba(20, 43, 77, 0.90);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(217, 167, 46, 0.25);
+    }
+
+    /* Transição suave de foco dos campos */
+    .input-field {
+      transition: all 0.25s ease-in-out;
+    }
+    .input-field:focus {
+      border-color: #D9A72E;
+      box-shadow: 0 0 0 3px rgba(217, 167, 46, 0.20);
+    }
+  </style>
+<!-- END: Custom Styles -->
+</head>
+<body class="bg-corporate-grid text-brand-light flex flex-col justify-between antialiased selection:bg-brand-gold selection:text-brand-navy">
+<!-- BEGIN: MainContainer -->
+<main class="flex-grow flex items-center justify-center px-4 py-8 sm:px-6 lg:px-8" data-purpose="authentication-container">
+<div class="w-full max-w-md">
+<!-- BEGIN: BrandHeader -->
+<!-- Topo com Logo e Boas-Vindas -->
+<header class="text-center mb-6" data-purpose="brand-header">
+<div class="inline-block relative mb-3">
+<img alt="Logo Sorteio Master" class="h-28 sm:h-32 w-auto mx-auto object-contain drop-shadow-[0_10px_20px_rgba(0,0,0,0.45)] transition-transform duration-300 hover:scale-[1.02]" height="128" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8d3UNyl8J5Tf7o-wmCP42KOoa_zdFXD0C_MmopGWjqdeSFXC82bDr2CUOGO1HPQK_tRz9Oq7I2d5mqEtL1NdWFymEdvihBt-MDeOwd3RYPL3dZHfSlT6CFmhxHqm3WoXOybuUITF5i_wQac9ExMa-dupH8oez3ZW8rNV9WnEX82i9lWWkb-eb--l0c0oKtwfhqDdVWxogEBgy2n9dnwl8bNLnJIh7QTfkg0_AIZuqoLwdUnMu7JPHlg" width="320"/>
+</div>
+<h1 class="font-display font-bold text-2xl sm:text-[1.65rem] text-white tracking-tight">
+          Bem-vindo ao Sorteio Master
+        </h1>
+<p class="text-brand-light/80 text-sm mt-1">
+          Acesse sua conta para gerenciar seus sorteios
+        </p>
+</header>
+<!-- END: BrandHeader -->
+<!-- BEGIN: AuthenticationCard -->
+<section class="glass-card rounded-2xl shadow-card-depth p-6 sm:p-8" data-purpose="login-form-wrapper">
+<!-- Feedback de Erro Dinâmico -->
+<div aria-live="polite" class="hidden mb-5 p-3.5 rounded-lg bg-red-950/40 border border-brand-alert text-red-200 text-xs sm:text-sm flex items-center gap-2.5 transition-all duration-300" id="error-feedback" role="alert">
+<svg class="w-5 h-5 text-brand-alert flex-shrink-0" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span id="error-message">Usuário ou senha incorretos. Verifique suas credenciais.</span>
+</div>
+<!-- Formulário de Autenticação -->
+<form class="space-y-5" id="login-form" method="POST" novalidate="">
+<!-- Campo: Usuário -->
+<div>
+<label class="block text-xs font-semibold uppercase tracking-wider text-brand-light/90 mb-1.5" for="username">
+              Usuário
+            </label>
+<div class="relative rounded-lg">
+<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-brand-light/40">
+<!-- Ícone Usuário -->
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<input autocomplete="username" class="input-field block w-full pl-11 pr-4 py-3 bg-[#0c1c34]/70 border border-brand-surface/90 rounded-lg text-white placeholder-brand-light/35 focus:outline-none focus:bg-[#0c1c34] text-sm" id="username" name="username" placeholder="Digite seu usuário ou e-mail" required="" type="text"/>
+</div>
+</div>
+<!-- Campo: Senha -->
+<div>
+<label class="block text-xs font-semibold uppercase tracking-wider text-brand-light/90 mb-1.5" for="password">
+              Senha
+            </label>
+<div class="relative rounded-lg">
+<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-brand-light/40">
+<!-- Ícone Cadeado -->
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<input autocomplete="current-password" class="input-field block w-full pl-11 pr-11 py-3 bg-[#0c1c34]/70 border border-brand-surface/90 rounded-lg text-white placeholder-brand-light/35 focus:outline-none focus:bg-[#0c1c34] text-sm" id="password" name="password" placeholder="••••••••" required="" type="password"/>
+<!-- Botão Alternar Visibilidade da Senha -->
+<button aria-label="Alternar exibição de senha" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-brand-light/50 hover:text-brand-gold transition-colors focus:outline-none" id="toggle-password" title="Mostrar/Ocultar senha" type="button">
+<!-- Ícone Olho Aberto -->
+<svg class="w-5 h-5 hidden" fill="none" id="icon-eye-open" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+<path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<!-- Ícone Olho Fechado -->
+<svg class="w-5 h-5" fill="none" id="icon-eye-closed" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+</div>
+</div>
+<!-- Opções: Lembrar e Esqueci a Senha -->
+<div class="flex items-center justify-between text-xs sm:text-sm pt-1">
+<label class="flex items-center space-x-2 text-brand-light/80 hover:text-white cursor-pointer select-none">
+<input class="rounded bg-[#0c1c34] border-brand-surface text-brand-gold focus:ring-brand-gold focus:ring-offset-brand-navy w-4 h-4 cursor-pointer" id="remember" name="remember" type="checkbox"/>
+<span>Lembrar meu acesso</span>
+</label>
+<a class="font-medium text-brand-gold hover:text-brand-gold-hover hover:underline focus:outline-none transition-colors" href="#recuperar-senha">
+              Esqueceu a senha?
+            </a>
+</div>
+<!-- Botão Principal de Login -->
+<button class="w-full mt-2 py-3.5 px-4 bg-brand-gold hover:bg-brand-gold-hover active:scale-[0.99] text-slate-900 font-extrabold text-sm sm:text-base tracking-wider rounded-lg shadow-gold-glow transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-gold focus:ring-offset-brand-navy" id="submit-btn" type="submit">
+<!-- Spinner Carregamento (Oculto Inicialmente) -->
+<svg class="animate-spin -ml-1 mr-2 h-5 w-5 text-slate-900 hidden" fill="none" id="loading-spinner" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+<path class="opacity-75" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" fill="currentColor"></path>
+</svg>
+<span id="btn-text">ENTRAR</span>
+</button>
+</form>
+<!-- Informação de Segurança Corporativa -->
+<div class="mt-6 pt-5 border-t border-white/5 flex items-center justify-center gap-2 text-brand-light/50 text-[11px]">
+<svg class="w-3.5 h-3.5 text-emerald-400" fill="currentColor" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fill-rule="evenodd"></path>
+</svg>
+<span>Conexão criptografada • Ambiente administrativo seguro</span>
+</div>
+</section>
+<!-- END: AuthenticationCard -->
+</div>
+</main>
+<!-- END: MainContainer -->
+<!-- BEGIN: SiteFooter -->
+<!-- Rodapé Institucional Corporativo -->
+<footer class="py-5 px-4 text-center text-xs text-brand-light/50 select-none" data-purpose="site-footer">
+<p>Sorteio Master • Sistema de Gestão e Auditoria de Sorteios © Todos os direitos reservados</p>
+</footer>
+<!-- END: SiteFooter -->
+<!-- BEGIN: LogicScript -->
+<script data-purpose="login-interactivity">
+    document.addEventListener('DOMContentLoaded', () => {
+      // Elementos do DOM
+      const passwordInput = document.getElementById('password');
+      const togglePasswordBtn = document.getElementById('toggle-password');
+      const iconEyeOpen = document.getElementById('icon-eye-open');
+      const iconEyeClosed = document.getElementById('icon-eye-closed');
+      const loginForm = document.getElementById('login-form');
+      const submitBtn = document.getElementById('submit-btn');
+      const btnText = document.getElementById('btn-text');
+      const loadingSpinner = document.getElementById('loading-spinner');
+      const errorFeedback = document.getElementById('error-feedback');
+      const errorMessage = document.getElementById('error-message');
+      const usernameInput = document.getElementById('username');
+
+      // 1. Alternância de Visibilidade da Senha
+      togglePasswordBtn.addEventListener('click', () => {
+        const isPassword = passwordInput.getAttribute('type') === 'password';
+        if (isPassword) {
+          passwordInput.setAttribute('type', 'text');
+          iconEyeOpen.classList.remove('hidden');
+          iconEyeClosed.classList.add('hidden');
+        } else {
+          passwordInput.setAttribute('type', 'password');
+          iconEyeOpen.classList.add('hidden');
+          iconEyeClosed.classList.remove('hidden');
+        }
+      });
+
+      // 2. Validação Interativa com Estado de Loading
+      loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const usernameVal = usernameInput.value.trim();
+        const passwordVal = passwordInput.value.trim();
+
+        // Esconde erro anterior
+        errorFeedback.classList.add('hidden');
+        usernameInput.classList.remove('border-brand-alert');
+        passwordInput.classList.remove('border-brand-alert');
+
+        // Ativa estado de carregamento
+        submitBtn.disabled = true;
+        submitBtn.classList.add('opacity-80', 'cursor-not-allowed');
+        loadingSpinner.classList.remove('hidden');
+        btnText.textContent = 'AUTENTICANDO...';
+
+        // Simulação de validação corporativa (800ms)
+        setTimeout(() => {
+          // Validação: Campos obrigatórios
+          if (!usernameVal || !passwordVal) {
+            errorMessage.textContent = 'Por favor, preencha todos os campos obrigatórios.';
+            errorFeedback.classList.remove('hidden');
+            
+            if (!usernameVal) usernameInput.classList.add('border-brand-alert');
+            if (!passwordVal) passwordInput.classList.add('border-brand-alert');
+
+            resetLoadingState();
+            return;
+          }
+
+          // Simulação de credencial incorreta para teste de validação visual
+          if (usernameVal !== 'admin' || passwordVal !== 'admin123') {
+            errorMessage.textContent = 'Usuário ou senha incorretos. Verifique suas credenciais.';
+            errorFeedback.classList.remove('hidden');
+            usernameInput.classList.add('border-brand-alert');
+            passwordInput.classList.add('border-brand-alert');
+            
+            resetLoadingState();
+          } else {
+            // Sucesso simulado
+            btnText.textContent = 'ACESSO PERMITIDO';
+            submitBtn.classList.remove('bg-brand-gold', 'hover:bg-brand-gold-hover');
+            submitBtn.classList.add('bg-emerald-500', 'text-white');
+            loadingSpinner.classList.add('hidden');
+            
+            setTimeout(() => {
+              alert('Autenticado com sucesso! Redirecionando para o painel de auditoria corporativa...');
+              resetLoadingState();
+              submitBtn.classList.remove('bg-emerald-500', 'text-white');
+              submitBtn.classList.add('bg-brand-gold', 'hover:bg-brand-gold-hover');
+            }, 500);
+          }
+        }, 800);
+      });
+
+      function resetLoadingState() {
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('opacity-80', 'cursor-not-allowed');
+        loadingSpinner.classList.add('hidden');
+        btnText.textContent = 'ENTRAR';
+      }
+    });
+  </script>
+<!-- END: LogicScript -->
+</body></html>

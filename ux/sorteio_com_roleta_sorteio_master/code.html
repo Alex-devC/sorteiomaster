@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_stack" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Montserrat:wght@600;700;800;900&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "error-container": "#93000a", "error": "#ffb4ab", "outline-variant": "#4f4635", "primary-fixed-dim": "#f3bf45", "tertiary-fixed-dim": "#b2c7f1", "secondary": "#b7c7ea", "tertiary-container": "#9aafd8", "inverse-surface": "#e0e3e6", "inverse-primary": "#795900", "on-tertiary-fixed-variant": "#32476b", "surface-container-highest": "#323538", "surface-container": "#1d2023", "surface-container-lowest": "#0b0f11", "secondary-fixed-dim": "#b7c7ea", "surface-bright": "#363a3d", "on-tertiary-container": "#2d4265", "outline": "#9b8f7b", "surface-tint": "#f3bf45", "on-surface": "#e0e3e6", "primary-container": "#d9a72e", "surface": "#101417", "secondary-fixed": "#d7e2ff", "on-secondary-fixed-variant": "#384764", "surface-container-low": "#191c1f", "on-secondary-container": "#a9b8db", "on-tertiary": "#1a3053", "on-tertiary-fixed": "#011b3d", "on-primary-fixed-variant": "#5c4300", "on-secondary": "#21304c", "primary": "#f7c248", "on-background": "#e0e3e6", "surface-variant": "#323538", "on-secondary-fixed": "#0a1b36", "tertiary": "#b5caf5", "surface-dim": "#101417", "background": "#101417", "on-primary": "#402d00", "on-error": "#690005", "on-primary-fixed": "#261a00", "surface-container-high": "#272a2d", "on-surface-variant": "#d2c5af", "on-primary-container": "#563e00", "secondary-container": "#3a4966", "primary-fixed": "#ffdf9f", "tertiary-fixed": "#d6e3ff", "on-error-container": "#ffdad6", "inverse-on-surface": "#2d3134" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "margin": "2rem", "space-2xs": "0.25rem", "space-3xl": "4.5rem", "space-sm": "0.75rem", "space-2xl": "3rem", "space-md": "1rem", "space-xs": "0.5rem", "space-xl": "2rem", "space-lg": "1.5rem", "gutter": "1.5rem", "gutter-mobile": "0.75rem", "margin-mobile": "1rem" }, fontFamily: { "body-md": ["Plus Jakarta Sans"], "label-md": ["Inter"], "headline-sm": ["Montserrat"], "headline-xl-mobile": ["Montserrat"], "label-sm": ["Inter"], "title-md": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"], "headline-md": ["Montserrat"], "headline-xl": ["Montserrat"], "display-hero": ["Montserrat"], "display-hero-mobile": ["Montserrat"], "label-lg": ["Inter"], "body-sm": ["Plus Jakarta Sans"], "counter-display": ["Montserrat"], "headline-lg": ["Montserrat"] }, fontSize: { "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "label-md": ["12px", { "lineHeight": "16px", "fontWeight": "500" }], "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }], "headline-xl-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }], "label-sm": ["11px", { "lineHeight": "14px", "fontWeight": "500" }], "title-md": ["18px", { "lineHeight": "26px", "fontWeight": "600" }], "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }], "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }], "headline-xl": ["40px", { "lineHeight": "48px", "fontWeight": "700" }], "display-hero": ["64px", { "lineHeight": "72px", "fontWeight": "800" }], "display-hero-mobile": ["36px", { "lineHeight": "44px", "fontWeight": "800" }], "label-lg": ["14px", { "lineHeight": "20px", "fontWeight": "600" }], "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }], "counter-display": ["72px", { "lineHeight": "80px", "fontWeight": "900" }], "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }] } } } }</script><style>@layer base{html,body{width:100vw;margin:0;padding:0;min-height:100vh;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-background font-body-md text-body-md text-on-surface antialiased flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface-container-lowest/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.35)]"><div class="h-14 px-margin-mobile flex items-center justify-between gap-space-xs"><div class="flex items-center gap-space-xs min-w-0"><button aria-label="Voltar" class="w-11 h-11 flex items-center justify-center rounded-lg text-on-surface hover:text-primary transition-colors flex-shrink-0" onclick="history.back()"><span class="material-symbols-outlined text-[20px]">arrow_back</span></button><img alt="Logo Sorteio Master em Estilo Cassino.png" class="h-8 w-auto object-contain flex-shrink-0" src="https://lh3.googleusercontent.com/aida/ALJJyrAz4UhaWNYTDDpU85je0RqiMTkwv8a5YXctW83Mr27YwS0b4Z7n1aOyGEnsyLwbimm00dZe2bgxU1sPcfupQVpS6vocYmH7DpOR9mMJRrnNnAufjEVLpDOCLALhUNDd9uBN17FGa9I8su4j6l1Fwm1WggFxA5CknVz2t1AghezvWuJ7F-ZhWfnCETRBk8GeDVFxtFXWyvnEPCdg90j6hZRIpOCtC2oZC-ZpfQ5OWXMqfOqAbC6dLTsikNYA"/><div class="flex flex-col min-w-0 pl-1"><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm text-primary font-bold truncate tracking-tight">Sorteio Master</span><span class="px-2 py-0.5 rounded-full bg-primary/20 text-primary font-label-sm text-label-sm uppercase tracking-wider font-semibold whitespace-nowrap">Em Andamento</span></div><span class="font-label-sm text-label-sm text-on-surface-variant truncate">Roleta Ao Vivo</span></div></div><div class="flex items-center gap-space-xs flex-shrink-0"><div class="flex flex-col items-end pr-1"><span class="font-label-sm text-label-sm text-on-surface-variant uppercase leading-none">Disp.</span><span class="font-headline-sm text-headline-sm text-primary font-bold leading-tight">1.250</span></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shadow-md"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex-1 flex flex-col relative w-full pt-14 pb-safe bg-background"><div class="flex flex-col w-full px-margin-mobile pb-space-2xl gap-space-md select-none">
+<!-- Status & Campaign Summary Bar -->
+<div class="flex flex-col gap-space-2xs bg-surface-container/90 backdrop-blur-md p-space-sm rounded-xl shadow-lg mt-space-xs">
+<div class="flex items-center justify-between gap-space-xs">
+<div class="flex items-center gap-space-2xs">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider font-semibold text-emerald-400">Campanha Ativa • Ao Vivo</span>
+</div>
+<div class="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-surface-container-high text-primary font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[14px]">confirmation_number</span>
+<span id="counter-disponiveis">48 de 50 disponíveis</span>
+</div>
+</div>
+<div class="flex items-baseline justify-between pt-1">
+<h1 class="font-headline-sm text-headline-sm text-on-surface font-bold tracking-tight truncate">
+        Convenção Master 2025
+      </h1>
+<span class="font-label-sm text-label-sm text-on-surface-variant whitespace-nowrap">Auditório Principal</span>
+</div>
+</div>
+<!-- Participant Selection Block -->
+<section aria-label="Seleção do Participante" class="flex flex-col gap-space-xs relative z-30">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold flex items-center justify-between" for="search-input">
+<span>Participante Oficial da Rodada</span>
+<span class="text-primary font-normal capitalize" id="badge-total-aptos">6 aptos</span>
+</label>
+<!-- Search Input & Autocomplete Container -->
+<div class="relative w-full">
+<div class="flex items-center bg-surface-container-lowest rounded-xl p-1 shadow-inner focus-within:shadow-[0_0_0_2px_rgba(217,167,46,0.5)] transition-all">
+<span class="material-symbols-outlined text-outline ml-3 text-[20px]">search</span>
+<input autocomplete="off" class="w-full bg-transparent px-2.5 py-2 font-body-md text-body-md text-on-surface placeholder:text-outline focus:outline-none" id="search-input" placeholder="Pesquisar participante pelo nome..." type="text"/>
+<button aria-label="Limpar busca" class="hidden p-1.5 text-outline hover:text-on-surface transition-colors" id="btn-clear-search">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<!-- Dropdown Results Menu -->
+<div class="hidden absolute top-full left-0 right-0 mt-1.5 max-h-52 overflow-y-auto bg-surface-container-high/95 backdrop-blur-xl rounded-xl shadow-2xl z-50 flex flex-col p-1.5 divide-y-0" id="dropdown-results">
+<!-- Results injected dynamically -->
+</div>
+</div>
+<!-- Active Participant Card (Initial State: Empty/Prompt) -->
+<div class="hidden bg-surface-container-high p-space-sm rounded-xl shadow-md flex items-center justify-between gap-space-xs transition-all animate-fadeIn" id="card-selected-participant">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-11 h-11 rounded-full bg-primary/20 text-primary font-headline-sm text-headline-sm flex items-center justify-center font-bold shadow-inner flex-shrink-0" id="participant-avatar">
+          AB
+        </div>
+<div class="flex flex-col min-w-0">
+<span class="font-title-md text-title-md text-on-surface font-semibold truncate" id="participant-name">
+            Ana Beatriz Ferreira
+          </span>
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+<span class="font-label-sm text-label-sm text-emerald-400 font-medium">Apto para o Sorteio</span>
+</div>
+</div>
+</div>
+<button class="px-2.5 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-highest text-on-surface-variant hover:text-error transition-colors flex items-center gap-1 text-label-sm font-label-sm flex-shrink-0" id="btn-deselect-participant">
+<span class="material-symbols-outlined text-[16px]">person_remove</span>
+<span>Trocar</span>
+</button>
+</div>
+<!-- Prompt Message when no participant is selected -->
+<div class="flex items-center gap-2 p-2.5 rounded-xl bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm" id="prompt-select-participant">
+<span class="material-symbols-outlined text-primary text-[18px]">info</span>
+<span>Selecione um participante acima para liberar o botão de sorteio.</span>
+</div>
+</section>
+<!-- Central Roulette Master Theater -->
+<section aria-label="Roleta Oficial Master" class="relative flex flex-col items-center justify-center my-space-xs py-space-xs">
+<!-- Ambient Radiance Background Behind Wheel -->
+<div class="absolute w-72 h-72 rounded-full bg-primary/10 blur-3xl pointer-events-none -z-10"></div>
+<div class="absolute w-60 h-60 rounded-full bg-secondary-container/20 blur-2xl pointer-events-none -z-10"></div>
+<!-- Roulette Outer Chassis Box -->
+<div class="relative w-[320px] h-[320px] sm:w-[350px] sm:h-[350px] flex items-center justify-center">
+<!-- Top Fixed Indicator Pointer (Ruby & Gold) -->
+<div class="absolute -top-3 z-30 flex flex-col items-center filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.6)]">
+<div class="w-7 h-8 bg-gradient-to-b from-[#DC2626] to-[#991B1B] clip-pointer rounded-t-sm shadow-md flex items-center justify-center pt-0.5">
+<div class="w-2 h-2 rounded-full bg-primary-fixed shadow-sm"></div>
+</div>
+</div>
+<!-- Outer Beveled Metallic Rim with Fairground Rivets -->
+<div class="w-full h-full rounded-full p-2.5 bg-gradient-to-tr from-[#8E6414] via-[#F7C248] to-[#5C4300] shadow-[0_12px_36px_rgba(0,0,0,0.7),inset_0_1px_3px_rgba(255,255,255,0.4)] flex items-center justify-center relative">
+<!-- Rivets ring -->
+<div class="absolute inset-1 rounded-full pointer-events-none flex items-center justify-center">
+<div class="w-full h-full relative" id="rivets-ring">
+<!-- 12 perimeter light rivets dynamically positioned -->
+</div>
+</div>
+<!-- Wheel Canvas Surface Substrate -->
+<div class="w-full h-full rounded-full overflow-hidden relative shadow-[inset_0_0_20px_rgba(0,0,0,0.8)] bg-[#091A35]">
+<canvas class="w-full h-full block transform-gpu will-change-transform" height="600" id="wheel-canvas" width="600"></canvas>
+</div>
+<!-- Center Brushed Brass Hub Badge -->
+<div class="absolute w-24 h-24 rounded-full bg-gradient-to-b from-[#FFF0BD] via-[#D9A72E] to-[#795900] shadow-[0_4px_16px_rgba(0,0,0,0.8),inset_0_2px_4px_rgba(255,255,255,0.6)] flex flex-col items-center justify-center z-20 p-1 pointer-events-none">
+<div class="w-full h-full rounded-full bg-[#101417] flex flex-col items-center justify-center text-center shadow-inner p-1">
+<span class="material-symbols-outlined text-primary text-[18px] mb-[-2px]">verified</span>
+<span class="font-headline-sm text-[9px] leading-tight text-primary font-black uppercase tracking-wider">SORTEIO</span>
+<span class="font-headline-sm text-[8px] leading-none text-on-surface-variant font-bold tracking-widest">MASTER</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Active Spin Status Feedback -->
+<div class="h-6 mt-3 flex items-center justify-center" id="spin-indicator-label">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium tracking-wide">
+        Pronto para girar
+      </span>
+</div>
+</section>
+<!-- Big Hero Action Button Container -->
+<div class="w-full flex flex-col gap-space-2xs mt-auto">
+<button aria-label="Ação de Sorteio" class="w-full py-4 px-6 rounded-xl font-headline-md text-headline-sm uppercase tracking-wider font-extrabold flex items-center justify-center gap-space-xs transition-all duration-300 shadow-lg cursor-not-allowed bg-surface-container-highest text-outline" disabled="" id="btn-spin">
+<span class="material-symbols-outlined text-[24px]">casino</span>
+<span id="btn-spin-text">SELECIONE UM PARTICIPANTE</span>
+</button>
+<div class="flex items-center justify-center gap-1.5 text-outline text-label-sm font-label-sm py-1">
+<span class="material-symbols-outlined text-[14px]">shield</span>
+<span>Algoritmo Auditado de Alta Integridade</span>
+</div>
+</div>
+<!-- Celebratory Award Modal / Ceremonial Result Overlay -->
+<div class="hidden fixed inset-0 z-50 flex items-center justify-center p-margin-mobile bg-[#091A35]/85 backdrop-blur-xl animate-fadeIn" id="modal-victory">
+<!-- Confetti Ambient Canvas -->
+<canvas class="absolute inset-0 w-full h-full pointer-events-none" id="confetti-canvas"></canvas>
+<div class="relative w-full max-w-sm rounded-2xl bg-gradient-to-b from-surface-container-high via-surface-container to-surface-container-lowest p-space-lg shadow-[0_16px_50px_rgba(0,0,0,0.8)] flex flex-col items-center text-center overflow-hidden">
+<!-- Glow ambient circle -->
+<div class="absolute -top-12 w-48 h-48 bg-primary/25 rounded-full blur-3xl pointer-events-none"></div>
+<!-- Laurel / Celebration Crown Icon -->
+<div class="w-16 h-16 rounded-full bg-gradient-to-br from-primary-fixed to-primary text-on-primary flex items-center justify-center shadow-[0_0_24px_rgba(247,194,72,0.4)] mb-space-xs">
+<span class="material-symbols-outlined text-[36px]" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-primary font-black uppercase tracking-widest">
+        PARABÉNS!
+      </span>
+<!-- Winner Name Highlight -->
+<h2 class="font-headline-md text-headline-md text-on-surface font-extrabold mt-1 mb-space-sm truncate max-w-full" id="winner-name-display">
+        Nome do Participante
+      </h2>
+<div class="w-full py-space-sm px-space-md rounded-xl bg-surface-container-lowest/80 flex flex-col items-center justify-center shadow-inner mb-space-lg">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant font-semibold mb-1">
+          SEU NÚMERO SORTEADO FOI
+        </span>
+<div class="relative flex items-center justify-center my-1">
+<span class="font-counter-display text-counter-display text-primary font-black tracking-tight leading-none drop-shadow-[0_4px_16px_rgba(247,194,72,0.6)]" id="winner-number-display">
+            27
+          </span>
+</div>
+<span class="font-label-sm text-label-sm text-emerald-400 font-medium flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> Registro Autenticado
+        </span>
+</div>
+<!-- Action Button to Reset for Next Draw -->
+<button class="w-full py-3.5 px-space-md rounded-xl bg-gradient-to-r from-primary-fixed via-primary to-primary-container text-on-primary font-headline-sm text-headline-sm font-bold uppercase tracking-wider shadow-[0_6px_20px_rgba(217,167,46,0.35)] hover:shadow-[0_8px_25px_rgba(217,167,46,0.5)] active:scale-[0.98] transition-all flex items-center justify-center gap-2" id="btn-next-draw">
+<span class="material-symbols-outlined text-[22px]">replay</span>
+<span>NOVO SORTEIO</span>
+</button>
+</div>
+</div>
+</div>
+<script>
+(() => {
+  // --- Data State Store ---
+  let participants = [
+    { id: '1', name: 'Ana Beatriz Ferreira', dept: 'Operações' },
+    { id: '2', name: 'Carlos Eduardo Mendes', dept: 'Engenharia' },
+    { id: '3', name: 'Daniela Rocha Santos', dept: 'Jurídico' },
+    { id: '4', name: 'Fernando Dias Alencar', dept: 'Comercial' },
+    { id: '5', name: 'Gabriela Silveira Vaz', dept: 'Marketing' },
+    { id: '6', name: 'Lucas Silveira Neves', dept: 'TI Corporativa' }
+  ];
+
+  let alreadyDrawnParticipants = [];
+  
+  // 50 official initial numbers (numbers 12 and 34 were previously drawn to match 48 available)
+  let availableNumbers = Array.from({ length: 50 }, (_, i) => i + 1).filter(n => n !== 12 && n !== 34);
+
+  let selectedParticipant = null;
+  let isSpinning = false;
+  let currentRotation = 0; // in radians
+  let targetWinningIndex = -1;
+
+  // --- Sound Generation (Web Audio API) ---
+  const AudioEngine = {
+    ctx: null,
+    init() {
+      if (!this.ctx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) this.ctx = new AudioContextClass();
+      }
+      if (this.ctx && this.ctx.state === 'suspended') {
+        this.ctx.resume();
+      }
+    },
+    playTick() {
+      if (!this.ctx) return;
+      try {
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(800 + Math.random() * 200, this.ctx.currentTime);
+        gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.04);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.045);
+      } catch (e) {}
+    },
+    playVictory() {
+      if (!this.ctx) return;
+      try {
+        const chord = [523.25, 659.25, 783.99, 1046.50]; // C Major arpeggio
+        chord.forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime + (idx * 0.09));
+          gain.gain.setValueAtTime(0.001, this.ctx.currentTime + (idx * 0.09));
+          gain.gain.linearRampToValueAtTime(0.12, this.ctx.currentTime + (idx * 0.09) + 0.04);
+          gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + (idx * 0.09) + 0.7);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(this.ctx.currentTime + (idx * 0.09));
+          osc.stop(this.ctx.currentTime + (idx * 0.09) + 0.75);
+        });
+      } catch (e) {}
+    }
+  };
+
+  // --- DOM Elements ---
+  const searchInput = document.getElementById('search-input');
+  const btnClearSearch = document.getElementById('btn-clear-search');
+  const dropdownResults = document.getElementById('dropdown-results');
+  const cardSelected = document.getElementById('card-selected-participant');
+  const promptSelect = document.getElementById('prompt-select-participant');
+  const participantNameEl = document.getElementById('participant-name');
+  const participantAvatarEl = document.getElementById('participant-avatar');
+  const btnDeselect = document.getElementById('btn-deselect-participant');
+  const btnSpin = document.getElementById('btn-spin');
+  const btnSpinText = document.getElementById('btn-spin-text');
+  const counterDisponiveis = document.getElementById('counter-disponiveis');
+  const badgeTotalAptos = document.getElementById('badge-total-aptos');
+  const spinIndicatorLabel = document.getElementById('spin-indicator-label');
+  const rivetsRing = document.getElementById('rivets-ring');
+  const canvas = document.getElementById('wheel-canvas');
+  const ctx = canvas.getContext('2d');
+  const modalVictory = document.getElementById('modal-victory');
+  const winnerNameDisplay = document.getElementById('winner-name-display');
+  const winnerNumberDisplay = document.getElementById('winner-number-display');
+  const btnNextDraw = document.getElementById('btn-next-draw');
+  const confettiCanvas = document.getElementById('confetti-canvas');
+
+  // --- Clip-pointer CSS Helper via script ---
+  const styleSheet = document.createElement('style');
+  styleSheet.textContent = `.clip-pointer { clip-path: polygon(50% 100%, 0 0, 100% 0); } @keyframes fadeIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } } .animate-fadeIn { animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards; }`;
+  document.head.appendChild(styleSheet);
+
+  // --- Render Perimeter Rivets ---
+  function renderRivets() {
+    rivetsRing.innerHTML = '';
+    const totalRivets = 16;
+    for (let i = 0; i < totalRivets; i++) {
+      const angle = (i * 2 * Math.PI) / totalRivets;
+      const x = 50 + 47.5 * Math.cos(angle);
+      const y = 50 + 47.5 * Math.sin(angle);
+      const dot = document.createElement('div');
+      dot.className = 'absolute w-1.5 h-1.5 rounded-full bg-[#FFF3C4] shadow-[0_0_6px_rgba(255,243,196,0.9)] -translate-x-1/2 -translate-y-1/2';
+      dot.style.left = `${x}%`;
+      dot.style.top = `${y}%`;
+      rivetsRing.appendChild(dot);
+    }
+  }
+
+  // --- Render Roulette Wheel Canvas ---
+  function drawWheel(highlightIndex = -1) {
+    const numSlices = availableNumbers.length;
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const radius = centerX - 4;
+    const sliceAngle = (2 * Math.PI) / numSlices;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Deep luxury segment color alternation
+    const palette = ['#091A35', '#142B4D', '#1A3053', '#0F2342'];
+
+    for (let i = 0; i < numSlices; i++) {
+      const angleStart = currentRotation + (i * sliceAngle);
+      const angleEnd = angleStart + sliceAngle;
+
+      ctx.beginPath();
+      ctx.moveTo(centerX, centerY);
+      ctx.arc(centerX, centerY, radius, angleStart, angleEnd);
+      ctx.closePath();
+
+      if (i === highlightIndex) {
+        ctx.fillStyle = '#F7C248'; // Winning Glow Pulse
+      } else {
+        ctx.fillStyle = palette[i % palette.length];
+      }
+      ctx.fill();
+
+      // Hairline spoke separation
+      ctx.strokeStyle = 'rgba(217, 167, 46, 0.3)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      // Render Number Label rotated outward
+      ctx.save();
+      ctx.translate(centerX, centerY);
+      ctx.rotate(angleStart + sliceAngle / 2);
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+
+      if (i === highlightIndex) {
+        ctx.fillStyle = '#091A35';
+        ctx.font = 'bold 22px Montserrat, sans-serif';
+      } else {
+        ctx.fillStyle = (i % 2 === 0) ? '#FFFFFF' : '#F7C248';
+        ctx.font = '600 17px Montserrat, sans-serif';
+      }
+
+      ctx.fillText(availableNumbers[i].toString(), radius - 18, 0);
+      ctx.restore();
+    }
+  }
+
+  // --- Participant Search & Selection Logic ---
+  function updateCounters() {
+    counterDisponiveis.textContent = `${availableNumbers.length} de 50 disponíveis`;
+    const remainingEligible = participants.filter(p => !alreadyDrawnParticipants.some(w => w.id === p.id));
+    badgeTotalAptos.textContent = `${remainingEligible.length} aptos`;
+  }
+
+  function getEligibleParticipants(query = '') {
+    const q = query.toLowerCase().trim();
+    return participants
+      .filter(p => !alreadyDrawnParticipants.some(w => w.id === p.id))
+      .filter(p => p.name.toLowerCase().includes(q));
+  }
+
+  function renderDropdown(items) {
+    dropdownResults.innerHTML = '';
+    if (items.length === 0) {
+      const emptyRow = document.createElement('div');
+      emptyRow.className = 'px-3 py-2 text-label-sm text-on-surface-variant text-center';
+      emptyRow.textContent = 'Nenhum participante apto encontrado';
+      dropdownResults.appendChild(emptyRow);
+      dropdownResults.classList.remove('hidden');
+      return;
+    }
+
+    items.forEach(p => {
+      const row = document.createElement('button');
+      row.type = 'button';
+      row.className = 'w-full text-left px-3 py-2 rounded-lg hover:bg-surface-container flex items-center justify-between transition-colors group';
+      
+      const initials = p.name.split(' ').map(n => n[0]).slice(0, 2).join('');
+      row.innerHTML = `
+        <div class="flex items-center gap-2 min-w-0">
+          <div class="w-7 h-7 rounded-full bg-primary/10 text-primary font-bold text-xs flex items-center justify-center flex-shrink-0 group-hover:bg-primary group-hover:text-on-primary transition-colors">
+            ${initials}
+          </div>
+          <div class="flex flex-col min-w-0">
+            <span class="font-body-md text-body-md text-on-surface font-medium truncate">${p.name}</span>
+            <span class="font-label-sm text-[11px] text-on-surface-variant truncate">${p.dept}</span>
+          </div>
+        </div>
+        <span class="material-symbols-outlined text-[16px] text-outline group-hover:text-primary">arrow_forward</span>
+      `;
+
+      row.addEventListener('click', () => {
+        selectParticipant(p);
+      });
+      dropdownResults.appendChild(row);
+    });
+
+    dropdownResults.classList.remove('hidden');
+  }
+
+  function selectParticipant(p) {
+    selectedParticipant = p;
+    searchInput.value = '';
+    btnClearSearch.classList.add('hidden');
+    dropdownResults.classList.add('hidden');
+
+    // Update UI Card
+    const initials = p.name.split(' ').map(n => n[0]).slice(0, 2).join('');
+    participantAvatarEl.textContent = initials;
+    participantNameEl.textContent = p.name;
+
+    cardSelected.classList.remove('hidden');
+    promptSelect.classList.add('hidden');
+
+    // Unlock Spin Button
+    btnSpin.disabled = false;
+    btnSpin.className = 'w-full py-4 px-6 rounded-xl font-headline-md text-headline-sm uppercase tracking-wider font-extrabold flex items-center justify-center gap-space-xs transition-all duration-300 shadow-[0_8px_28px_rgba(217,167,46,0.35)] cursor-pointer bg-gradient-to-r from-[#FFDF79] via-[#D9A72E] to-[#B68218] text-[#091A35] hover:shadow-[0_12px_36px_rgba(217,167,46,0.55)] active:scale-[0.99] border-t border-white/40';
+    btnSpinText.textContent = 'GIRAR ROLETA';
+    spinIndicatorLabel.innerHTML = `<span class="font-label-sm text-label-sm text-emerald-400 font-semibold flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Roleta Liberada para ${p.name.split(' ')[0]}</span>`;
+  }
+
+  function deselectParticipant() {
+    selectedParticipant = null;
+    cardSelected.classList.add('hidden');
+    promptSelect.classList.remove('hidden');
+
+    btnSpin.disabled = true;
+    btnSpin.className = 'w-full py-4 px-6 rounded-xl font-headline-md text-headline-sm uppercase tracking-wider font-extrabold flex items-center justify-center gap-space-xs transition-all duration-300 shadow-lg cursor-not-allowed bg-surface-container-highest text-outline';
+    btnSpinText.textContent = 'SELECIONE UM PARTICIPANTE';
+    spinIndicatorLabel.innerHTML = `<span class="font-label-sm text-label-sm text-on-surface-variant font-medium tracking-wide">Pronto para girar</span>`;
+    searchInput.focus();
+  }
+
+  // --- Spin Mechanics with Deceleration & Sound Sync ---
+  function spinRoulette() {
+    if (isSpinning || !selectedParticipant || availableNumbers.length === 0) return;
+
+    AudioEngine.init();
+    isSpinning = true;
+
+    // Lock interactions
+    btnSpin.disabled = true;
+    btnSpin.className = 'w-full py-4 px-6 rounded-xl font-headline-md text-headline-sm uppercase tracking-wider font-extrabold flex items-center justify-center gap-space-xs transition-all duration-300 shadow-inner cursor-wait bg-surface-container-high text-primary';
+    btnSpinText.textContent = 'SORTEANDO...';
+    btnDeselect.style.display = 'none';
+    searchInput.disabled = true;
+    spinIndicatorLabel.innerHTML = `<span class="font-label-sm text-label-sm text-primary font-bold animate-pulse flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px] animate-spin">refresh</span> Em movimento... Boa sorte!</span>`;
+
+    // Pick target winner index randomly
+    targetWinningIndex = Math.floor(Math.random() * availableNumbers.length);
+    const winningNumber = availableNumbers[targetWinningIndex];
+
+    const sliceAngle = (2 * Math.PI) / availableNumbers.length;
+    // Top pointer is located at -PI/2 (270 degrees)
+    // Wheel stops when angleStart + (sliceAngle / 2) aligns with -Math.PI / 2
+    const targetSliceMidAngle = targetWinningIndex * sliceAngle + (sliceAngle / 2);
+    let desiredFinalRotation = (3 * Math.PI / 2) - targetSliceMidAngle;
+
+    // Normalize and add full spins (5 to 7 full circles for realism)
+    const extraSpins = (5 + Math.floor(Math.random() * 2)) * (2 * Math.PI);
+    const currentNorm = currentRotation % (2 * Math.PI);
+    const totalDelta = extraSpins + ((desiredFinalRotation - currentNorm + (4 * Math.PI)) % (2 * Math.PI));
+
+    const startRotation = currentRotation;
+    const finalRotation = currentRotation + totalDelta;
+    const duration = 5200; // ms
+    const startTime = performance.now();
+
+    let lastTickAngle = currentRotation;
+
+    function animateSpin(now) {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+
+      // Quartic Ease-Out curve for authentic mechanical deceleration
+      const easeProgress = 1 - Math.pow(1 - progress, 4);
+
+      currentRotation = startRotation + (totalDelta * easeProgress);
+
+      // Sound Tick trigger when crossing slice boundaries
+      if (Math.abs(currentRotation - lastTickAngle) >= sliceAngle) {
+        AudioEngine.playTick();
+        lastTickAngle = currentRotation;
+      }
+
+      drawWheel(-1);
+
+      if (progress < 1) {
+        requestAnimationFrame(animateSpin);
+      } else {
+        // Complete spin: Snap accurately
+        currentRotation = finalRotation;
+        drawWheel(targetWinningIndex);
+        spinIndicatorLabel.innerHTML = `<span class="font-label-sm text-label-sm text-primary font-extrabold uppercase tracking-widest">NÚMERO CONFIRMADO!</span>`;
+
+        // Golden Flash Suspense for 1.3 seconds
+        setTimeout(() => {
+          showVictoryCeremony(winningNumber);
+        }, 1300);
+      }
+    }
+
+    requestAnimationFrame(animateSpin);
+  }
+
+  // --- Victory Ceremony & Confetti ---
+  function showVictoryCeremony(winningNum) {
+    AudioEngine.playVictory();
+    winnerNameDisplay.textContent = selectedParticipant.name;
+    winnerNumberDisplay.textContent = winningNum < 10 ? `0${winningNum}` : winningNum;
+
+    modalVictory.classList.remove('hidden');
+    startConfetti();
+  }
+
+  // Pure Canvas Confetti particles
+  let confettiAnimId = null;
+  function startConfetti() {
+    const cCtx = confettiCanvas.getContext('2d');
+    confettiCanvas.width = confettiCanvas.clientWidth;
+    confettiCanvas.height = confettiCanvas.clientHeight;
+
+    const colors = ['#F7C248', '#FFDF79', '#D9A72E', '#FFFFFF', '#38BDF8', '#10B981'];
+    const particles = Array.from({ length: 65 }, () => ({
+      x: confettiCanvas.width / 2,
+      y: confettiCanvas.height / 2,
+      vx: (Math.random() - 0.5) * 12,
+      vy: (Math.random() - 0.8) * 14,
+      size: Math.random() * 6 + 4,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      tilt: Math.random() * 10,
+      tiltSpeed: Math.random() * 0.1 + 0.05,
+      gravity: 0.22,
+      alpha: 1
+    }));
+
+    function step() {
+      cCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+      let activeCount = 0;
+
+      particles.forEach(p => {
+        p.vy += p.gravity;
+        p.x += p.vx;
+        p.y += p.vy;
+        p.tilt += p.tiltSpeed;
+        p.alpha -= 0.004;
+
+        if (p.alpha > 0) {
+          activeCount++;
+          cCtx.save();
+          cCtx.globalAlpha = Math.max(0, p.alpha);
+          cCtx.fillStyle = p.color;
+          cCtx.translate(p.x, p.y);
+          cCtx.rotate(p.tilt);
+          cCtx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.7);
+          cCtx.restore();
+        }
+      });
+
+      if (activeCount > 0) {
+        confettiAnimId = requestAnimationFrame(step);
+      }
+    }
+    step();
+  }
+
+  function stopConfetti() {
+    if (confettiAnimId) cancelAnimationFrame(confettiAnimId);
+    const cCtx = confettiCanvas.getContext('2d');
+    cCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+  }
+
+  // --- Reset to Next Draw Cycle ---
+  function resetForNextDraw() {
+    stopConfetti();
+    modalVictory.classList.add('hidden');
+
+    if (selectedParticipant && targetWinningIndex !== -1) {
+      // 1. Move participant to drawn list
+      alreadyDrawnParticipants.push(selectedParticipant);
+
+      // 2. Remove winning number from available pool
+      availableNumbers.splice(targetWinningIndex, 1);
+    }
+
+    // 3. Reset internal states
+    selectedParticipant = null;
+    targetWinningIndex = -1;
+    isSpinning = false;
+
+    // 4. Update UI counters and inputs
+    updateCounters();
+    deselectParticipant();
+    btnDeselect.style.display = 'flex';
+    searchInput.disabled = false;
+    searchInput.value = '';
+
+    // 5. Redraw Roulette with updated available number set
+    drawWheel(-1);
+  }
+
+  // --- Event Listeners Setup ---
+  searchInput.addEventListener('input', (e) => {
+    const val = e.target.value;
+    if (val.trim().length > 0) {
+      btnClearSearch.classList.remove('hidden');
+      renderDropdown(getEligibleParticipants(val));
+    } else {
+      btnClearSearch.classList.add('hidden');
+      dropdownResults.classList.add('hidden');
+    }
+  });
+
+  searchInput.addEventListener('focus', () => {
+    renderDropdown(getEligibleParticipants(searchInput.value));
+  });
+
+  btnClearSearch.addEventListener('click', () => {
+    searchInput.value = '';
+    btnClearSearch.classList.add('hidden');
+    dropdownResults.classList.add('hidden');
+    searchInput.focus();
+  });
+
+  // Close dropdown on click outside
+  document.addEventListener('click', (e) => {
+    if (!searchInput.contains(e.target) && !dropdownResults.contains(e.target)) {
+      dropdownResults.classList.add('hidden');
+    }
+  });
+
+  btnDeselect.addEventListener('click', deselectParticipant);
+  btnSpin.addEventListener('click', spinRoulette);
+  btnNextDraw.addEventListener('click', resetForNextDraw);
+
+  // --- Initialization ---
+  renderRivets();
+  updateCounters();
+  drawWheel(-1);
+})();
+</script></main></body></html>
