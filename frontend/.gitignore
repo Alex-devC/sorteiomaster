@@ -1,21 +1,9 @@
-# Dependências
 node_modules/
-
-# Build
 dist/
-
-# Variáveis de ambiente
+-dist/
 .env
 .env.local
 .env.production
-
-# Logs
 *.log
-
-# Sistema operacional
 .DS_Store
 Thumbs.db
-
-# Editor
-.vscode/
-.idea/

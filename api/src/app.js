@@ -1,6 +1,7 @@
 'use strict';
 
 const express = require('express');
+const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const { errorHandler } = require('./middlewares/errorHandler');
@@ -8,8 +9,18 @@ const { errorHandler } = require('./middlewares/errorHandler');
 function createApp() {
   const app = express();
 
+  // ─── CORS: Permitir requisições do frontend ──────────────────────────────
+  app.use(cors({
+    origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+  }));
+
   // ─── Segurança: Helmet (cabeçalhos HTTP) ─────────────────────────────────
-  app.use(helmet());
+  app.use(helmet({
+    crossOriginResourcePolicy: false,
+  }));
 
   // ─── Rate Limit global ───────────────────────────────────────────────────
   const globalLimiter = rateLimit({
