@@ -172,7 +172,8 @@ Todas as rotas sob `/api/admin` requerem o cabeçalho `Authorization: Bearer <TO
 | **Números** | `GET` | `/api/admin/campanhas/:campanha_id/numeros` | Listar números da campanha |
 | | `GET` | `/api/admin/campanhas/:campanha_id/numeros/stats` | Estatísticas (total, disponíveis, sorteados) |
 | **Sorteios** | `POST` | `/api/admin/campanhas/:campanha_id/sorteios` | Realizar sorteio CSPRNG |
-| | `GET` | `/api/admin/campanhas/:campanha_id/sorteios` | Histórico com filtros |
+| | `GET` | `/api/admin/campanhas/:campanha_id/sorteios` | Histórico com filtros (situação, participante, número) |
+| | `GET` | `/api/admin/sorteios/:id` | Consultar detalhes de um sorteio |
 | | `PATCH` | `/api/admin/sorteios/:id/cancelar` | Cancelamento com liberação precisa |
 | **Exportação** | `GET` | `/api/admin/campanhas/:campanha_id/exportar/excel` | Baixar planilha Excel (.xlsx) |
 | | `GET` | `/api/admin/campanhas/:campanha_id/exportar/csv` | Baixar arquivo CSV (.csv) |
@@ -185,6 +186,18 @@ No terminal PowerShell:
 
 ```powershell
 cd D:\GeminiCLI\roleta\api
+
+# Testes de integração do Histórico de Sorteios (Etapa 08)
+node scripts/test-runner-etapa08.js
+
+# Testes de integração da Roleta & Sorteios (Etapa 07)
+node scripts/test-runner-etapa07.js
+
+# Testes de integração de Participantes & Importação (Etapa 06)
+node scripts/test-runner-etapa06.js
+
+# Testes de integração de Campanhas (Etapa 05)
+node scripts/test-runner-etapa05.js
 
 # Testes de integração do Frontend & Autenticação (Etapa 04)
 node scripts/test-runner-etapa04.js
@@ -204,4 +217,7 @@ node scripts/test-etapa02.js
 - [x] **Etapa 02:** Modelagem funcional completa, segurança, JWT, bcrypt, Helmet e rate limiting.
 - [x] **Etapa 03:** Endpoints funcionais de campanhas, participantes, números, sorteio CSPRNG, cancelamento, importação XLSX/XLS/CSV, exportação Excel/CSV e documentação.
 - [x] **Etapa 04:** Frontend React + Vite com tela de login integrada, proteção de rotas, layout administrativo responsivo, sidebar retrátil e dashboard consumindo dados reais da API.
-- [ ] **Etapa 05:** Frontend - Módulos de gestão de Campanhas, Participantes, Importação e Sorteio com Roleta Eletrônica.
+- [x] **Etapa 05:** Frontend - Módulo completo de gerenciamento de campanhas (CRUD, modais de criação/edição/detalhes e controle de status).
+- [x] **Etapa 06:** Frontend - Módulo completo de gerenciamento de participantes (listagem, pesquisa, filtros, cadastro, edição, exclusão protegida, importação com pré-visualização XLSX/XLS/CSV e conferência de compatibilidade em tempo real).
+- [x] **Etapa 07:** Frontend - Sorteio eletrônico com Roleta Eletrônica interativa em Canvas, física de desaceleração Quartic, sincronização estrita com API CSPRNG, efeitos sonoros Web Audio API e celebração cerimonial.
+- [x] **Etapa 08:** Frontend - Histórico e auditoria de sorteios da campanha (listagem de resultados, separação de sorteios ativos e cancelados, filtros por participante, número e situação, modal de consulta de detalhes oficiais via API, métricas consolidadas e navegação integrada).

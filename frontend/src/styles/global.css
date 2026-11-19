@@ -1179,3 +1179,230 @@ button, input, select, textarea {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* ─── Importação — Stepper de Etapas ───────────────────────────────── */
+.import-stepper {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+  background: #F8FAFC;
+  gap: 0.5rem;
+}
+.step-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+.step-item.active {
+  color: var(--color-navy);
+  font-weight: 700;
+}
+.step-num {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--color-border);
+  color: #64748B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.step-item.active .step-num {
+  background: var(--color-navy);
+  color: var(--color-gold);
+}
+.step-line {
+  flex: 1;
+  height: 1px;
+  background: var(--color-border);
+}
+
+/* ─── Importação — Dropzone de Upload ──────────────────────────────── */
+.file-dropzone {
+  border: 2px dashed var(--color-border);
+  border-radius: 0.75rem;
+  padding: 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  margin-bottom: 1rem;
+}
+.file-dropzone:hover {
+  border-color: var(--color-gold);
+  background: #FFFBEB;
+}
+.file-dropzone.has-file {
+  border-color: var(--color-success);
+  background: #F0FDF4;
+}
+
+/* ─── Importação — Card do arquivo selecionado ─────────────────────── */
+.selected-file-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #F1F5F9;
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+}
+.selected-file-card .file-name {
+  font-weight: 600;
+  color: var(--color-navy);
+  font-size: 0.875rem;
+}
+.selected-file-card .file-size {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+/* ─── Importação — Preview de amostras ─────────────────────────────── */
+.preview-sample-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin-top: 0.5rem;
+}
+.preview-pill {
+  background: #E0E7FF;
+  color: #3730A3;
+  border-radius: 9999px;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* ─── Participantes — Status badges ────────────────────────────────── */
+.status-disponivel {
+  background: #D1FAE5;
+  color: #065F46;
+}
+.status-sorteado {
+  background: #E0E7FF;
+  color: #3730A3;
+}
+
+/* ─── Participantes — Barra de filtros ─────────────────────────────── */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+  padding: 0.875rem 1rem;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+}
+.filter-bar .filter-search {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 200px;
+}
+.filter-bar .filter-search input {
+  flex: 1;
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  color: var(--color-text-main);
+  outline: none;
+  transition: var(--transition-fast);
+}
+.filter-bar .filter-search input:focus {
+  border-color: var(--color-gold);
+  box-shadow: 0 0 0 3px rgba(217, 167, 46, 0.15);
+}
+.filter-bar select {
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  color: var(--color-text-main);
+  background: white;
+  cursor: pointer;
+  outline: none;
+}
+.filter-bar select:focus {
+  border-color: var(--color-gold);
+}
+
+/* ─── Participantes — Card de conferência ──────────────────────────── */
+.conferencia-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+.conferencia-mini-card {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  padding: 0.875rem;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.conferencia-mini-card .conf-number {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--color-navy);
+  line-height: 1;
+}
+.conferencia-mini-card .conf-label {
+  font-size: 0.6875rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 0.375rem;
+}
+.compatibilidade-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.875rem;
+  border-radius: 9999px;
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+.compatibilidade-badge.compativel {
+  background: #D1FAE5;
+  color: #065F46;
+}
+.compatibilidade-badge.incompativel {
+  background: #FEE2E2;
+  color: #991B1B;
+}
+
+/* ─── Responsivo — Participantes no Mobile ─────────────────────────── */
+@media (max-width: 640px) {
+  .filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .filter-bar .filter-search {
+    min-width: 100%;
+  }
+  .conferencia-card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+
+/* ─── Sorteios — Status Badges ──────────────────────────────────────── */
+.status-confirmado {
+  background: #D1FAE5;
+  color: #065F46;
+}
+.status-cancelado {
+  background: #FEE2E2;
+  color: #991B1B;
+}

@@ -167,7 +167,7 @@ async function cancelarSorteio(id, motivo_cancelamento) {
   });
 }
 
-async function listarSorteios(campanha_id, { status, participante_id, numero } = {}) {
+async function listarSorteios(campanha_id, { status, participante_id, numero, busca } = {}) {
   const campanha = await CampanhaModel.findById(campanha_id);
   if (!campanha) throw new AppError('Campanha não encontrada.', 404);
 
@@ -188,9 +188,15 @@ async function listarSorteios(campanha_id, { status, participante_id, numero } =
       'n.numero as numero_sorteado'
     );
 
-  if (status) q = q.where('s.status', status);
+  if (status) {
+    const statusVal = (status === 'realizado' || status === 'ativo') ? 'confirmado' : status;
+    q = q.where('s.status', statusVal);
+  }
   if (participante_id) q = q.where('s.participante_id', participante_id);
   if (numero !== undefined && numero !== null) q = q.where('n.numero', numero);
+  if (busca && busca.trim() !== '') {
+    q = q.where('p.nome', 'like', `%${busca.trim()}%`);
+  }
 
   return q.orderBy('s.sorteado_em', 'desc');
 }

@@ -118,7 +118,8 @@ async function previewImportacao(campanha_id, fileBuffer, colunaNomeParam) {
       duplicados_no_arquivo: totalDuplicadosArquivo,
       ja_cadastrados_na_campanha: totalJaCadastrados
     },
-    exemplos_validos: registrosValidos.slice(0, 10).map(r => r.nome)
+    exemplos_validos: registrosValidos.slice(0, 10).map(r => r.nome),
+    nomes_validos: registrosValidos.map(r => r.nome)
   };
 }
 

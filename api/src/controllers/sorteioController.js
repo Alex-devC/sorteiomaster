@@ -33,11 +33,18 @@ async function cancelar(req, res, next) {
 async function listar(req, res, next) {
   try {
     const campanha_id = parseInt(req.params.campanha_id, 10);
-    const { status, participante_id, numero } = req.query;
+    const { status, participante_id, numero, busca, participante } = req.query;
+
+    let statusDb = status;
+    if (status === 'realizado' || status === 'ativo') {
+      statusDb = 'confirmado';
+    }
+
     const resultado = await listarSorteios(campanha_id, {
-      status,
+      status: statusDb,
       participante_id: participante_id ? parseInt(participante_id, 10) : undefined,
-      numero: numero !== undefined && numero !== '' ? parseInt(numero, 10) : undefined
+      numero: numero !== undefined && numero !== '' ? parseInt(numero, 10) : undefined,
+      busca: busca || participante || undefined
     });
     return res.status(200).json(resultado);
   } catch (err) {

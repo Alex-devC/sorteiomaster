@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { CampanhaFormModal } from '../components/CampanhaFormModal';
 import { CampanhaDetalhesModal } from '../components/CampanhaDetalhesModal';
@@ -8,6 +9,9 @@ import {
   PlusCircle,
   Eye,
   Edit2,
+  Users,
+  Dices,
+  History,
   PlayCircle,
   CheckCircle,
   XCircle,
@@ -18,6 +22,7 @@ import {
 } from 'lucide-react';
 
 export function Campanhas() {
+  const navigate = useNavigate();
   const [campanhas, setCampanhas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -292,6 +297,37 @@ export function Campanhas() {
                       </td>
                       <td style={{ textAlign: 'right' }}>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.375rem' }}>
+                          {/* Sorteio / Roleta (Campanhas Ativas) */}
+                          {camp.status === 'ativa' && (
+                            <button
+                              className="btn-icon-table"
+                              title="Abrir Roleta ao Vivo desta Campanha"
+                              style={{ color: '#D9A72E' }}
+                              onClick={() => navigate(`/sorteio?campanha_id=${camp.id}`)}
+                            >
+                              <Dices size={16} />
+                            </button>
+                          )}
+
+                          {/* Gerenciar Participantes */}
+                          <button
+                            className="btn-icon-table"
+                            title="Gerenciar Participantes"
+                            onClick={() => navigate(`/campanhas/${camp.id}/participantes`)}
+                          >
+                            <Users size={16} />
+                          </button>
+
+                          {/* Histórico de Sorteios */}
+                          <button
+                            className="btn-icon-table"
+                            title="Histórico de Sorteios"
+                            style={{ color: '#091A35' }}
+                            onClick={() => navigate(`/campanhas/${camp.id}/sorteios`)}
+                          >
+                            <History size={16} />
+                          </button>
+
                           {/* Visualizar / Detalhes */}
                           <button
                             className="btn-icon-table"

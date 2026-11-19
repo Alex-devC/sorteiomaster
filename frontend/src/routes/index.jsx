@@ -3,6 +3,9 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { Login } from '../pages/Login';
 import { Dashboard } from '../pages/Dashboard';
 import { Campanhas } from '../pages/Campanhas';
+import { Participantes } from '../pages/Participantes';
+import { SorteioRoleta } from '../pages/SorteioRoleta';
+import { HistoricoSorteios } from '../pages/HistoricoSorteios';
 import { AdminLayout } from '../layouts/AdminLayout';
 import { PrivateRoute } from './PrivateRoute';
 
@@ -29,6 +32,35 @@ export function AppRoutes() {
               <Campanhas />
             </AdminLayout>
           }
+        />
+        <Route
+          path="/campanhas/:campanha_id/participantes"
+          element={
+            <AdminLayout>
+              <Participantes />
+            </AdminLayout>
+          }
+        />
+        <Route
+          path="/campanhas/:campanha_id/sorteios"
+          element={
+            <AdminLayout>
+              <HistoricoSorteios />
+            </AdminLayout>
+          }
+        />
+        <Route
+          path="/campanhas/:campanha_id/historico"
+          element={
+            <AdminLayout>
+              <HistoricoSorteios />
+            </AdminLayout>
+          }
+        />
+        {/* Tela Imersiva de Sorteio com Roleta Eletrônica */}
+        <Route
+          path="/sorteio"
+          element={<SorteioRoleta />}
         />
       </Route>
 

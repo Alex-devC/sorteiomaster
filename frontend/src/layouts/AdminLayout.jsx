@@ -4,6 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import {
   LayoutDashboard,
   Layers,
+  Dices,
   LogOut,
   Menu,
   ChevronLeft,
@@ -76,6 +77,15 @@ export function AdminLayout({ children }) {
           >
             <Layers className="sidebar-link-icon" size={20} />
             {!collapsed && <span>Campanhas</span>}
+          </NavLink>
+
+          <NavLink
+            to="/sorteio"
+            className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}
+            onClick={() => setMobileOpen(false)}
+          >
+            <Dices className="sidebar-link-icon" size={20} style={{ color: '#F7C248' }} />
+            {!collapsed && <span>Roleta Ao Vivo</span>}
           </NavLink>
         </nav>
 
