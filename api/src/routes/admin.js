@@ -114,6 +114,7 @@ router.get('/campanhas/:campanha_id/exportar/excel', exportacaoController.export
 router.get('/campanhas/:campanha_id/exportar/csv', exportacaoController.exportarCsv);
 
 // ─── Exclusão e Reativação de Campanhas ───────────────────────────────────────
+router.delete('/campanhas/:id', idParamValidation, validate, excluirCampanha);
 router.delete('/campanhas/:id/excluir', idParamValidation, validate, excluirCampanha);
 router.post('/campanhas/:id/reativar', idParamValidation, validate, reativarCampanha);
 
