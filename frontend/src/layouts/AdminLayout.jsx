@@ -87,6 +87,15 @@ export function AdminLayout({ children }) {
             <Dices className="sidebar-link-icon" size={20} style={{ color: '#F7C248' }} />
             {!collapsed && <span>Roleta Ao Vivo</span>}
           </NavLink>
+
+          <NavLink
+            to="/usuarios"
+            className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}
+            onClick={() => setMobileOpen(false)}
+          >
+            <Shield className="sidebar-link-icon" size={20} />
+            {!collapsed && <span>Usuários</span>}
+          </NavLink>
         </nav>
 
         {/* Rodapé da Sidebar */}

@@ -6,6 +6,7 @@ import { Campanhas } from '../pages/Campanhas';
 import { Participantes } from '../pages/Participantes';
 import { SorteioRoleta } from '../pages/SorteioRoleta';
 import { HistoricoSorteios } from '../pages/HistoricoSorteios';
+import { Usuarios } from '../pages/Usuarios';
 import { AdminLayout } from '../layouts/AdminLayout';
 import { PrivateRoute } from './PrivateRoute';
 
@@ -54,6 +55,14 @@ export function AppRoutes() {
           element={
             <AdminLayout>
               <HistoricoSorteios />
+            </AdminLayout>
+          }
+        />
+        <Route
+          path="/usuarios"
+          element={
+            <AdminLayout>
+              <Usuarios />
             </AdminLayout>
           }
         />

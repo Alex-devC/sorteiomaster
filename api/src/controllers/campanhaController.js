@@ -6,7 +6,9 @@ const {
   listarCampanhas,
   buscarCampanha,
   atualizarStatus,
-  conferirCampanha
+  conferirCampanha,
+  excluirCampanhaFinalizada,
+  reativarCampanhaFinalizada
 } = require('../services/campanhaService');
 
 async function criar(req, res, next) {
@@ -69,11 +71,34 @@ async function conferir(req, res, next) {
   }
 }
 
+async function excluir(req, res, next) {
+  try {
+    const id = parseInt(req.params.id, 10);
+    const resultado = await excluirCampanhaFinalizada(id);
+    return res.status(200).json(resultado);
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function reativar(req, res, next) {
+  try {
+    const id = parseInt(req.params.id, 10);
+    const { opcao } = req.body;
+    const resultado = await reativarCampanhaFinalizada(id, opcao);
+    return res.status(200).json(resultado);
+  } catch (err) {
+    next(err);
+  }
+}
+
 module.exports = {
   criar,
   editar,
   listar,
   buscar,
   alterarStatus,
-  conferir
+  conferir,
+  excluir,
+  reativar,
 };

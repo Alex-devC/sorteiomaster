@@ -4,6 +4,8 @@ import api from '../services/api';
 import { CampanhaFormModal } from '../components/CampanhaFormModal';
 import { CampanhaDetalhesModal } from '../components/CampanhaDetalhesModal';
 import { StatusConfirmModal } from '../components/StatusConfirmModal';
+import { CampanhaExcluirModal } from '../components/CampanhaExcluirModal';
+import { CampanhaReativarModal } from '../components/CampanhaReativarModal';
 import {
   Layers,
   PlusCircle,
@@ -18,7 +20,9 @@ import {
   RefreshCw,
   FolderOpen,
   AlertCircle,
-  CheckCircle2
+  CheckCircle2,
+  Trash2,
+  RotateCcw
 } from 'lucide-react';
 
 export function Campanhas() {
@@ -40,6 +44,13 @@ export function Campanhas() {
   const [isStatusOpen, setIsStatusOpen] = useState(false);
   const [targetStatusCampanha, setTargetStatusCampanha] = useState(null);
   const [novoStatusAlvo, setNovoStatusAlvo] = useState('');
+
+  // Modais de Exclusão e Reativação (Campanhas Finalizadas)
+  const [isExcluirOpen, setIsExcluirOpen] = useState(false);
+  const [campanhaExcluir, setCampanhaExcluir] = useState(null);
+
+  const [isReativarOpen, setIsReativarOpen] = useState(false);
+  const [campanhaReativar, setCampanhaReativar] = useState(null);
 
   // 1. Carregar lista de campanhas da API
   const carregarCampanhas = async () => {
@@ -118,6 +129,32 @@ export function Campanhas() {
     } catch (err) {
       return {
         error: err.response?.data?.error || 'Falha ao alterar o status da campanha.'
+      };
+    }
+  };
+
+  const handleExcluirCampanha = async (id) => {
+    try {
+      await api.delete(`/admin/campanhas/${id}/excluir`);
+      exibirFeedback('Campanha e todos os dados associados excluídos com sucesso!');
+      await carregarCampanhas();
+      return { success: true };
+    } catch (err) {
+      return {
+        error: err.response?.data?.error || 'Falha ao excluir campanha.'
+      };
+    }
+  };
+
+  const handleReativarCampanha = async (id, opcao) => {
+    try {
+      await api.post(`/admin/campanhas/${id}/reativar`, { opcao });
+      exibirFeedback(`Campanha reativada com sucesso (${opcao === 'zerar' ? 'zerando sorteios' : 'mantendo progresso'})!`);
+      await carregarCampanhas();
+      return { success: true };
+    } catch (err) {
+      return {
+        error: err.response?.data?.error || 'Falha ao reativar campanha.'
       };
     }
   };
@@ -366,6 +403,35 @@ export function Campanhas() {
                               </button>
                             );
                           })}
+
+                          {/* Ações Exclusivas para Campanhas Finalizadas (Etapa 10) */}
+                          {camp.status === 'finalizada' && (
+                            <>
+                              <button
+                                className="btn-status-action btn-action-ativa"
+                                title="Reativar Campanha Finalizada"
+                                onClick={() => {
+                                  setCampanhaReativar(camp);
+                                  setIsReativarOpen(true);
+                                }}
+                              >
+                                <RefreshCw size={14} />
+                                <span>Reativar</span>
+                              </button>
+
+                              <button
+                                className="btn-status-action btn-action-cancela"
+                                title="Excluir Campanha Finalizada e Dados Associados"
+                                onClick={() => {
+                                  setCampanhaExcluir(camp);
+                                  setIsExcluirOpen(true);
+                                }}
+                              >
+                                <Trash2 size={14} />
+                                <span>Excluir</span>
+                              </button>
+                            </>
+                          )}
                         </div>
                       </td>
                     </tr>
@@ -408,6 +474,27 @@ export function Campanhas() {
         onConfirm={handleConfirmarStatus}
         campanha={targetStatusCampanha}
         novoStatus={novoStatusAlvo}
+      />
+
+      {/* Modais de Exclusão e Reativação (Etapa 10) */}
+      <CampanhaExcluirModal
+        isOpen={isExcluirOpen}
+        onClose={() => {
+          setIsExcluirOpen(false);
+          setCampanhaExcluir(null);
+        }}
+        onConfirm={handleExcluirCampanha}
+        campanha={campanhaExcluir}
+      />
+
+      <CampanhaReativarModal
+        isOpen={isReativarOpen}
+        onClose={() => {
+          setIsReativarOpen(false);
+          setCampanhaReativar(null);
+        }}
+        onConfirm={handleReativarCampanha}
+        campanha={campanhaReativar}
       />
     </div>
   );

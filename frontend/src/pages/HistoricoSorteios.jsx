@@ -2,6 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { SorteioDetalhesModal } from '../components/SorteioDetalhesModal';
+import { SorteioCancelarModal } from '../components/SorteioCancelarModal';
+import { SorteioReativarModal } from '../components/SorteioReativarModal';
 import {
   ArrowLeft,
   History,
@@ -17,6 +19,8 @@ import {
   Hash,
   Calendar,
   X,
+  RotateCcw,
+  RotateCw,
   FileSpreadsheet
 } from 'lucide-react';
 
@@ -69,6 +73,23 @@ export function HistoricoSorteios() {
   // Modal de Detalhes
   const [detalhesModalOpen, setDetalhesModalOpen] = useState(false);
   const [selectedSorteioId, setSelectedSorteioId] = useState(null);
+
+  // Modais de Ação (Cancelar e Reativar)
+  const [cancelarModalOpen, setCancelarModalOpen] = useState(false);
+  const [sorteioParaCancelar, setSorteioParaCancelar] = useState(null);
+
+  const [reativarModalOpen, setReativarModalOpen] = useState(false);
+  const [sorteioParaReativar, setSorteioParaReativar] = useState(null);
+
+  // Feedback de Sucesso
+  const [feedbackMsg, setFeedbackMsg] = useState('');
+
+  const mostrarFeedback = (msg) => {
+    setFeedbackMsg(msg);
+    setTimeout(() => {
+      setFeedbackMsg('');
+    }, 5000);
+  };
 
   // Carregar dados da campanha
   const carregarCampanha = useCallback(async () => {
@@ -160,6 +181,30 @@ export function HistoricoSorteios() {
     carregarSorteiosFiltrados('', '', '');
   };
 
+  const handleAbrirCancelar = (sorteio) => {
+    setSorteioParaCancelar(sorteio);
+    setCancelarModalOpen(true);
+  };
+
+  const handleSucessoCancelar = (sorteioCancelado) => {
+    mostrarFeedback(
+      `Sorteio #${sorteioCancelado.id} cancelado com sucesso. O participante "${sorteioCancelado.participante_nome}" e o número ${sorteioCancelado.numero_sorteado} foram liberados para a campanha.`
+    );
+    handleAtualizar();
+  };
+
+  const handleAbrirReativar = (sorteio) => {
+    setSorteioParaReativar(sorteio);
+    setReativarModalOpen(true);
+  };
+
+  const handleSucessoReativar = (sorteioReativado) => {
+    mostrarFeedback(
+      `Sorteio #${sorteioReativado.id} reativado com sucesso. O participante "${sorteioReativado.participante_nome}" e o número ${sorteioReativado.numero_sorteado} foram novamente bloqueados na campanha.`
+    );
+    handleAtualizar();
+  };
+
   const temFiltroAtivo =
     filtroParticipante.trim() !== '' ||
     filtroNumero !== '' ||
@@ -243,6 +288,14 @@ export function HistoricoSorteios() {
           </p>
         </div>
       </div>
+
+      {/* Alerta de Feedback de Sucesso */}
+      {feedbackMsg && (
+        <div className="alert-feedback-success" role="status" style={{ marginBottom: '1.25rem' }}>
+          <CheckCircle2 size={18} />
+          <span>{feedbackMsg}</span>
+        </div>
+      )}
 
       {/* Mensagem de Erro Geral */}
       {error && (
@@ -661,18 +714,47 @@ export function HistoricoSorteios() {
 
                       {/* Ações */}
                       <td style={{ textAlign: 'right' }}>
-                        <button
-                          type="button"
-                          className="btn-icon-table"
-                          title="Visualizar detalhes do sorteio"
-                          onClick={() => {
-                            setSelectedSorteioId(s.id);
-                            setDetalhesModalOpen(true);
-                          }}
-                          style={{ color: 'var(--color-navy)' }}
-                        >
-                          <Eye size={16} />
-                        </button>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.375rem' }}>
+                          {/* Visualizar Detalhes */}
+                          <button
+                            type="button"
+                            className="btn-icon-table"
+                            title="Visualizar detalhes do sorteio"
+                            onClick={() => {
+                              setSelectedSorteioId(s.id);
+                              setDetalhesModalOpen(true);
+                            }}
+                            style={{ color: 'var(--color-navy)' }}
+                          >
+                            <Eye size={16} />
+                          </button>
+
+                          {/* Se Ativo: Botão Cancelar / Voltar */}
+                          {!isCancelado && (
+                            <button
+                              type="button"
+                              className="btn-icon-table"
+                              title="Cancelar / Voltar Sorteio (Liberar Participante e Número)"
+                              onClick={() => handleAbrirCancelar(s)}
+                              style={{ color: '#DC2626' }}
+                            >
+                              <RotateCcw size={16} />
+                            </button>
+                          )}
+
+                          {/* Se Cancelado: Botão Reativar */}
+                          {isCancelado && (
+                            <button
+                              type="button"
+                              className="btn-icon-table"
+                              title="Reativar este Sorteio"
+                              onClick={() => handleAbrirReativar(s)}
+                              style={{ color: '#059669' }}
+                            >
+                              <RotateCw size={16} />
+                            </button>
+                          )}
+                        </div>
                       </td>
                     </tr>
                   );
@@ -691,6 +773,28 @@ export function HistoricoSorteios() {
           setSelectedSorteioId(null);
         }}
         sorteioId={selectedSorteioId}
+      />
+
+      {/* Modal de Cancelamento de Sorteio */}
+      <SorteioCancelarModal
+        isOpen={cancelarModalOpen}
+        onClose={() => {
+          setCancelarModalOpen(false);
+          setSorteioParaCancelar(null);
+        }}
+        sorteio={sorteioParaCancelar}
+        onSuccess={handleSucessoCancelar}
+      />
+
+      {/* Modal de Reativação de Sorteio */}
+      <SorteioReativarModal
+        isOpen={reativarModalOpen}
+        onClose={() => {
+          setReativarModalOpen(false);
+          setSorteioParaReativar(null);
+        }}
+        sorteio={sorteioParaReativar}
+        onSuccess={handleSucessoReativar}
       />
     </div>
   );

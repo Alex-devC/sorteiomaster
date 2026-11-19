@@ -10,23 +10,59 @@ class UsuarioModel {
   }
 
   static async findById(id) {
+    return getDb()(this.table)
+      .where({ id })
+      .select('id', 'nome', 'usuario', 'ativo', 'is_admin_principal', 'permissoes', 'created_at', 'updated_at')
+      .first();
+  }
+
+  static async findByIdComSenha(id) {
     return getDb()(this.table).where({ id }).first();
   }
 
-  static async create({ nome, usuario, senha_hash }) {
+  static async findAll() {
+    return getDb()(this.table)
+      .select('id', 'nome', 'usuario', 'ativo', 'is_admin_principal', 'permissoes', 'created_at', 'updated_at')
+      .orderBy('id', 'asc');
+  }
+
+  static async create({ nome, usuario, senha_hash, ativo = true, permissoes = '[]', is_admin_principal = false }) {
     const [id] = await getDb()(this.table).insert({
       nome,
       usuario,
       senha_hash,
-      ativo: true,
+      ativo: !!ativo,
+      permissoes: typeof permissoes === 'string' ? permissoes : JSON.stringify(permissoes),
+      is_admin_principal: !!is_admin_principal,
       created_at: new Date(),
       updated_at: new Date(),
     });
     return this.findById(id);
   }
 
-  static async existeUsuario(usuario) {
-    const row = await getDb()(this.table).where({ usuario }).count('id as count').first();
+  static async update(id, data) {
+    const updateData = { ...data, updated_at: new Date() };
+    if (updateData.permissoes && typeof updateData.permissoes !== 'string') {
+      updateData.permissoes = JSON.stringify(updateData.permissoes);
+    }
+    await getDb()(this.table).where({ id }).update(updateData);
+    return this.findById(id);
+  }
+
+  static async updateSenha(id, senha_hash) {
+    await getDb()(this.table).where({ id }).update({
+      senha_hash,
+      updated_at: new Date(),
+    });
+    return this.findById(id);
+  }
+
+  static async existeUsuario(usuario, excluirId = null) {
+    let q = getDb()(this.table).where({ usuario });
+    if (excluirId) {
+      q = q.whereNot({ id: excluirId });
+    }
+    const row = await q.count('id as count').first();
     return parseInt(row.count, 10) > 0;
   }
 }

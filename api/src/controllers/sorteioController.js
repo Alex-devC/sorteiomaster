@@ -3,6 +3,7 @@
 const {
   realizarSorteio,
   cancelarSorteio,
+  reativarSorteio,
   listarSorteios,
   buscarSorteio
 } = require('../services/sorteioService');
@@ -62,9 +63,20 @@ async function buscar(req, res, next) {
   }
 }
 
+async function reativar(req, res, next) {
+  try {
+    const id = parseInt(req.params.id, 10);
+    const resultado = await reativarSorteio(id);
+    return res.status(200).json(resultado);
+  } catch (err) {
+    next(err);
+  }
+}
+
 module.exports = {
   realizar,
   cancelar,
+  reativar,
   listar,
   buscar
 };

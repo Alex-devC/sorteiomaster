@@ -162,6 +162,14 @@ Todas as rotas sob `/api/admin` requerem o cabeçalho `Authorization: Bearer <TO
 | | `PUT` | `/api/admin/campanhas/:id` | Editar campanha em preparação |
 | | `PATCH` | `/api/admin/campanhas/:id/status` | Alterar status |
 | | `GET` | `/api/admin/campanhas/:id/conferencia` | Conferência de compatibilidade |
+| | `DELETE` | `/api/admin/campanhas/:id/excluir` | Excluir campanha finalizada e dados associados |
+| | `POST` | `/api/admin/campanhas/:id/reativar` | Reativar campanha finalizada (`{ opcao: 'zerar' \| 'continuar' }`) |
+| **Usuários** | `GET` | `/api/admin/usuarios` | Listar todos os usuários |
+| | `GET` | `/api/admin/usuarios/:id` | Consultar usuário por ID |
+| | `POST` | `/api/admin/usuarios` | Cadastrar novo usuário |
+| | `PUT` | `/api/admin/usuarios/:id` | Editar dados do usuário |
+| | `PATCH` | `/api/admin/usuarios/:id/senha` | Redefinir senha do usuário |
+| | `PATCH` | `/api/admin/usuarios/:id/status` | Ativar ou desativar usuário |
 | **Participantes** | `GET` | `/api/admin/campanhas/:campanha_id/participantes` | Listar participantes com filtros |
 | | `GET` | `/api/admin/campanhas/:campanha_id/participantes/disponiveis` | Somente participantes disponíveis |
 | | `POST` | `/api/admin/campanhas/:campanha_id/participantes` | Cadastro individual de participante |
@@ -174,7 +182,8 @@ Todas as rotas sob `/api/admin` requerem o cabeçalho `Authorization: Bearer <TO
 | **Sorteios** | `POST` | `/api/admin/campanhas/:campanha_id/sorteios` | Realizar sorteio CSPRNG |
 | | `GET` | `/api/admin/campanhas/:campanha_id/sorteios` | Histórico com filtros (situação, participante, número) |
 | | `GET` | `/api/admin/sorteios/:id` | Consultar detalhes de um sorteio |
-| | `PATCH` | `/api/admin/sorteios/:id/cancelar` | Cancelamento com liberação precisa |
+| | `PATCH` | `/api/admin/sorteios/:id/cancelar` | Cancelamento com liberação precisa e motivo obrigatório |
+| | `PATCH` | `/api/admin/sorteios/:id/reativar` | Reativação transacional com rebloqueio de participante e número |
 | **Exportação** | `GET` | `/api/admin/campanhas/:campanha_id/exportar/excel` | Baixar planilha Excel (.xlsx) |
 | | `GET` | `/api/admin/campanhas/:campanha_id/exportar/csv` | Baixar arquivo CSV (.csv) |
 
@@ -186,6 +195,12 @@ No terminal PowerShell:
 
 ```powershell
 cd D:\GeminiCLI\roleta\api
+
+# Testes da Etapa 10 (Usuários e Gestão Avançada de Campanhas)
+node scripts/test_etapa10.js
+
+# Testes de integração do Cancelamento e Reativação de Sorteios (Etapa 09)
+node scripts/test-runner-etapa09.js
 
 # Testes de integração do Histórico de Sorteios (Etapa 08)
 node scripts/test-runner-etapa08.js
@@ -221,3 +236,5 @@ node scripts/test-etapa02.js
 - [x] **Etapa 06:** Frontend - Módulo completo de gerenciamento de participantes (listagem, pesquisa, filtros, cadastro, edição, exclusão protegida, importação com pré-visualização XLSX/XLS/CSV e conferência de compatibilidade em tempo real).
 - [x] **Etapa 07:** Frontend - Sorteio eletrônico com Roleta Eletrônica interativa em Canvas, física de desaceleração Quartic, sincronização estrita com API CSPRNG, efeitos sonoros Web Audio API e celebração cerimonial.
 - [x] **Etapa 08:** Frontend - Histórico e auditoria de sorteios da campanha (listagem de resultados, separação de sorteios ativos e cancelados, filtros por participante, número e situação, modal de consulta de detalhes oficiais via API, métricas consolidadas e navegação integrada).
+- [x] **Etapa 09:** Cancelamento e reativação transacional de sorteios (liberação e rebloqueio preciso de participante e número original, motivo obrigatório, proteção contra duplicidade, tratamento de concorrência e conflitos de ocupação).
+- [x] **Etapa 10:** Usuários e gerenciamento avançado de campanhas (CRUD e redefinição de senhas, ativação/desativação, proteção da conta do administrador principal e auto-desativação, preparação para permissões; exclusão atômica de campanhas finalizadas sem orfandade; reativação de campanhas finalizadas com suporte a Opção A: Zerar sorteios com histórico preservado ou Opção B: Continuar de onde parou).

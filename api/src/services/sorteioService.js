@@ -122,6 +122,11 @@ async function realizarSorteio(campanha_id, participante_id, numero_id = null) {
  * Preserva o histórico do sorteio e libera exatamente o participante e o número associados.
  */
 async function cancelarSorteio(id, motivo_cancelamento) {
+  if (!motivo_cancelamento || typeof motivo_cancelamento !== 'string' || motivo_cancelamento.trim().length === 0) {
+    throw new AppError('O motivo do cancelamento é obrigatório.', 422);
+  }
+
+  const motivoFormatado = motivo_cancelamento.trim();
   const db = getDb();
 
   return db.transaction(async (trx) => {
@@ -134,7 +139,7 @@ async function cancelarSorteio(id, motivo_cancelamento) {
     await trx('sorteios').where({ id }).update({
       status: 'cancelado',
       cancelado_em: new Date(),
-      motivo_cancelamento: motivo_cancelamento || null,
+      motivo_cancelamento: motivoFormatado,
       updated_at: new Date(),
     });
 
@@ -147,6 +152,121 @@ async function cancelarSorteio(id, motivo_cancelamento) {
       .where({ id: sorteio.numero_id })
       .update({ status: 'disponivel', updated_at: new Date() });
 
+    return trx('sorteios as s')
+      .join('participantes as p', 's.participante_id', 'p.id')
+      .join('numeros as n', 's.numero_id', 'n.id')
+      .where('s.id', id)
+      .select(
+        's.id',
+        's.campanha_id',
+        's.participante_id',
+        's.numero_id',
+        's.status',
+        's.sorteado_em',
+        's.cancelado_em',
+        's.motivo_cancelamento',
+        'p.nome as participante_nome',
+        'n.numero as numero_sorteado'
+      )
+      .first();
+  });
+}
+
+/**
+ * Reativa um sorteio previamente cancelado:
+ * - Valida se o sorteio existe e está cancelado.
+ * - Valida se a campanha não está cancelada.
+ * - Valida se o participante e o número originais estão disponíveis.
+ * - Impede a operação se o participante ou número já possuir outro sorteio ativo.
+ * - Executa atomicamente em transação com bloqueio forUpdate().
+ */
+async function reativarSorteio(id) {
+  const db = getDb();
+
+  return db.transaction(async (trx) => {
+    // 1. Bloquear e validar o sorteio
+    const sorteio = await trx('sorteios').where({ id }).forUpdate().first();
+    if (!sorteio) throw new AppError('Sorteio não encontrado.', 404);
+    if (sorteio.status === 'confirmado') {
+      throw new AppError('Este sorteio já está ativo.', 422);
+    }
+
+    // 2. Validar campanha
+    const campanha = await trx('campanhas').where({ id: sorteio.campanha_id }).first();
+    if (!campanha) throw new AppError('Campanha associada não encontrada.', 404);
+    if (campanha.status === 'cancelada') {
+      throw new AppError('Não é possível reativar sorteios de uma campanha cancelada.', 422);
+    }
+
+    // 3. Bloquear e validar participante original
+    const participante = await trx('participantes')
+      .where({ id: sorteio.participante_id, campanha_id: sorteio.campanha_id })
+      .forUpdate()
+      .first();
+    if (!participante) throw new AppError('Participante associado ao sorteio não encontrado.', 404);
+
+    if (participante.status !== 'disponivel') {
+      throw new AppError(
+        `Não é possível reativar: o participante "${participante.nome}" não está disponível (situação: ${participante.status}).`,
+        422
+      );
+    }
+
+    // Garantir que o participante não possui nenhum outro sorteio ativo na campanha
+    const partComSorteioAtivo = await trx('sorteios')
+      .where({ participante_id: sorteio.participante_id, status: 'confirmado' })
+      .whereNot({ id })
+      .first();
+    if (partComSorteioAtivo) {
+      throw new AppError(
+        `Não é possível reativar: o participante "${participante.nome}" já possui outro sorteio ativo nesta campanha.`,
+        409
+      );
+    }
+
+    // 4. Bloquear e validar número original
+    const numero = await trx('numeros')
+      .where({ id: sorteio.numero_id, campanha_id: sorteio.campanha_id })
+      .forUpdate()
+      .first();
+    if (!numero) throw new AppError('Número associado ao sorteio não encontrado.', 404);
+
+    if (numero.status !== 'disponivel') {
+      throw new AppError(
+        `Não é possível reativar: o número ${numero.numero} não está disponível (situação: ${numero.status}).`,
+        422
+      );
+    }
+
+    // Garantir que o número não possui nenhum outro sorteio ativo na campanha
+    const numComSorteioAtivo = await trx('sorteios')
+      .where({ numero_id: sorteio.numero_id, status: 'confirmado' })
+      .whereNot({ id })
+      .first();
+    if (numComSorteioAtivo) {
+      throw new AppError(
+        `Não é possível reativar: o número ${numero.numero} já possui outro sorteio ativo nesta campanha.`,
+        409
+      );
+    }
+
+    // 5. Reativar sorteio
+    await trx('sorteios').where({ id }).update({
+      status: 'confirmado',
+      cancelado_em: null,
+      updated_at: new Date(),
+    });
+
+    // 6. Bloquear novamente o participante e número originais
+    await trx('participantes')
+      .where({ id: sorteio.participante_id })
+      .update({ status: 'sorteado', updated_at: new Date() });
+
+    await trx('numeros')
+      .where({ id: sorteio.numero_id })
+      .update({ status: 'sorteado', updated_at: new Date() });
+
+    // 7. Retornar dados do sorteio reativado
     return trx('sorteios as s')
       .join('participantes as p', 's.participante_id', 'p.id')
       .join('numeros as n', 's.numero_id', 'n.id')
@@ -227,6 +347,7 @@ async function buscarSorteio(id) {
 module.exports = {
   realizarSorteio,
   cancelarSorteio,
+  reativarSorteio,
   listarSorteios,
   buscarSorteio
 };

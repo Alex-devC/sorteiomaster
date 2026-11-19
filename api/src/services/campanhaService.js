@@ -128,11 +128,125 @@ async function atualizarStatus(id, novoStatus) {
   return CampanhaModel.updateStatus(id, novoStatus);
 }
 
+/**
+ * Exclui permanentemente uma campanha finalizada e todos os seus dados dependentes
+ * em transação atômica MySQL.
+ */
+async function excluirCampanhaFinalizada(id) {
+  const db = getDb();
+
+  return db.transaction(async (trx) => {
+    const campanha = await trx('campanhas').where({ id }).forUpdate().first();
+    if (!campanha) throw new AppError('Campanha não encontrada.', 404);
+
+    if (campanha.status !== 'finalizada') {
+      throw new AppError(
+        `Apenas campanhas com situação 'finalizada' podem ser excluídas (situação atual: ${campanha.status}).`,
+        422
+      );
+    }
+
+    // 1. Excluir histórico de sorteios vinculados
+    await trx('sorteios').where({ campanha_id: id }).delete();
+
+    // 2. Excluir números gerados vinculados
+    await trx('numeros').where({ campanha_id: id }).delete();
+
+    // 3. Excluir participantes vinculados
+    await trx('participantes').where({ campanha_id: id }).delete();
+
+    // 4. Excluir o registro da campanha
+    await trx('campanhas').where({ id }).delete();
+
+    return {
+      message: 'Campanha e todos os dados associados foram excluídos com sucesso.',
+      id
+    };
+  });
+}
+
+/**
+ * Reativa uma campanha finalizada através de uma das opções obrigatórias:
+ * - 'zerar': Cancela sorteios ativos no histórico com motivo de reinício, libera participantes e números, e volta status para 'ativa'.
+ * - 'continuar': Preserva todos os sorteios, participantes e números bloqueados exatamente como estão, e volta status para 'ativa'.
+ */
+async function reativarCampanhaFinalizada(id, opcao) {
+  if (!opcao || (opcao !== 'zerar' && opcao !== 'continuar')) {
+    throw new AppError('Opção de reativação inválida. Escolha "zerar" ou "continuar".', 400);
+  }
+
+  const db = getDb();
+
+  return db.transaction(async (trx) => {
+    const campanha = await trx('campanhas').where({ id }).forUpdate().first();
+    if (!campanha) throw new AppError('Campanha não encontrada.', 404);
+
+    if (campanha.status === 'ativa') {
+      throw new AppError('Esta campanha já está ativa.', 422);
+    }
+
+    if (campanha.status !== 'finalizada') {
+      throw new AppError(
+        `Apenas campanhas com situação 'finalizada' podem ser reativadas (situação atual: ${campanha.status}).`,
+        422
+      );
+    }
+
+    if (opcao === 'zerar') {
+      // 1. Cancelar sorteios confirmados no histórico (NUNCA apaga do histórico)
+      await trx('sorteios')
+        .where({ campanha_id: id, status: 'confirmado' })
+        .update({
+          status: 'cancelado',
+          cancelado_em: new Date(),
+          motivo_cancelamento: 'Campanha reiniciada: sorteio cancelado para novo ciclo completo',
+          updated_at: new Date(),
+        });
+
+      // 2. Liberar todos os participantes
+      await trx('participantes')
+        .where({ campanha_id: id })
+        .update({
+          status: 'disponivel',
+          updated_at: new Date(),
+        });
+
+      // 3. Liberar todos os números
+      await trx('numeros')
+        .where({ campanha_id: id })
+        .update({
+          status: 'disponivel',
+          updated_at: new Date(),
+        });
+
+      // 4. Alterar status da campanha para ativa
+      await trx('campanhas')
+        .where({ id })
+        .update({
+          status: 'ativa',
+          updated_at: new Date(),
+        });
+    } else {
+      // Opção 'continuar': preserva exatamente todos os dados e bloqueios anteriores
+      await trx('campanhas')
+        .where({ id })
+        .update({
+          status: 'ativa',
+          updated_at: new Date(),
+        });
+    }
+
+    return trx('campanhas').where({ id }).first();
+  });
+}
+
 module.exports = {
   criarCampanha,
   editarCampanha,
   listarCampanhas,
   buscarCampanha,
   atualizarStatus,
-  conferirCampanha
+  conferirCampanha,
+  excluirCampanhaFinalizada,
+  reativarCampanhaFinalizada,
 };

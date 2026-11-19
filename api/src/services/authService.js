@@ -20,6 +20,7 @@ function gerarToken(usuario) {
     sub: usuario.id,
     usuario: usuario.usuario,
     nome: usuario.nome,
+    is_admin_principal: !!usuario.is_admin_principal,
   };
   return jwt.sign(payload, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN || '8h',
@@ -37,7 +38,13 @@ async function login(usuario, senha) {
   const token = gerarToken(user);
   return {
     token,
-    usuario: { id: user.id, nome: user.nome, usuario: user.usuario },
+    usuario: {
+      id: user.id,
+      nome: user.nome,
+      usuario: user.usuario,
+      is_admin_principal: !!user.is_admin_principal,
+      permissoes: typeof user.permissoes === 'string' ? JSON.parse(user.permissoes || '[]') : (user.permissoes || []),
+    },
   };
 }
 

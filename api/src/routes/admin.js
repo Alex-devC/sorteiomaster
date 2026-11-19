@@ -22,8 +22,17 @@ const {
 
 const {
   realizarSorteioValidation,
-  cancelarSorteioValidation
+  cancelarSorteioValidation,
+  reativarSorteioValidation
 } = require('../validations/sorteioValidation');
+
+const {
+  cadastrarUsuarioValidation,
+  editarUsuarioValidation,
+  alterarSenhaValidation,
+  alterarStatusValidation: alterarStatusUsuarioValidation,
+  idParamValidation: idUsuarioParam,
+} = require('../validations/usuarioValidation');
 
 // Controllers
 const {
@@ -32,8 +41,12 @@ const {
   listar,
   buscar,
   alterarStatus,
-  conferir
+  conferir,
+  excluir: excluirCampanha,
+  reativar: reativarCampanha
 } = require('../controllers/campanhaController');
+
+const usuarioController = require('../controllers/usuarioController');
 
 const {
   adicionar: adicionarP,
@@ -53,6 +66,7 @@ const {
 const {
   realizar,
   cancelar,
+  reativar,
   listar: listarS,
   buscar: buscarS
 } = require('../controllers/sorteioController');
@@ -93,9 +107,22 @@ router.post('/campanhas/:campanha_id/sorteios', realizarSorteioValidation, valid
 router.get('/campanhas/:campanha_id/sorteios', listarS);
 router.get('/sorteios/:id', buscarS);
 router.patch('/sorteios/:id/cancelar', cancelarSorteioValidation, validate, cancelar);
+router.patch('/sorteios/:id/reativar', reativarSorteioValidation, validate, reativar);
 
 // ─── Exportação de Resultados ─────────────────────────────────────────────────
 router.get('/campanhas/:campanha_id/exportar/excel', exportacaoController.exportarExcel);
 router.get('/campanhas/:campanha_id/exportar/csv', exportacaoController.exportarCsv);
+
+// ─── Exclusão e Reativação de Campanhas ───────────────────────────────────────
+router.delete('/campanhas/:id/excluir', idParamValidation, validate, excluirCampanha);
+router.post('/campanhas/:id/reativar', idParamValidation, validate, reativarCampanha);
+
+// ─── Usuários ─────────────────────────────────────────────────────────────────
+router.get('/usuarios', usuarioController.listar);
+router.get('/usuarios/:id', idUsuarioParam, validate, usuarioController.buscar);
+router.post('/usuarios', cadastrarUsuarioValidation, validate, usuarioController.cadastrar);
+router.put('/usuarios/:id', editarUsuarioValidation, validate, usuarioController.editar);
+router.patch('/usuarios/:id/senha', alterarSenhaValidation, validate, usuarioController.alterarSenha);
+router.patch('/usuarios/:id/status', alterarStatusUsuarioValidation, validate, usuarioController.alterarStatus);
 
 module.exports = router;
